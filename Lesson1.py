@@ -1,2 +1,7 @@
-print "This is the begining of a very long journey!"
-print "Good luck and have %s" % 'fun'
+print "Hello World!"
+print "Hello Again"
+print "I like typing this.(No, that is not true)"
+print "This is fun."
+print 'Yay! Printing.'
+print "I'd much rather you 'not'."
+print 'I "said" you do not touch this.'
