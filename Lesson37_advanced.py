@@ -61,3 +61,78 @@ try:
 	print len(s)
 except TypeError:
      print "NULL doesn't have length"
+
+print "\n7. yield\n"
+
+def fab(max):
+    n, a, b = 0, 0, 1
+    L = []
+    while n < max:
+        L.append(b)
+        a, b = b, a + b
+        n = n + 1
+    return L
+
+def fab_yield(max):
+    n, a, b = 0, 0, 1
+    while n < max:
+        yield b
+        a, b = b, a + b
+        n = n + 1
+
+for n in fab(5): # return a List
+	print n,
+
+print "\n"
+
+for n in fab_yield(5): # not return a List, but a iterable object
+	print n,
+
+print "\n"
+
+print "8. is\n"
+
+List1 = [21, 'clock']
+List2 = [21, 'clock']
+
+print "List1 = [21, 'clock']"
+print "List2 = [21, 'clock']"
+print "Does %r == %r ?\n> %r, they have same member and value." %( List1, List2, List1 == List2)
+print "Does %r is %r ?\n> %r, they are different object(correspond to different memory)." %( List1, List2, List1 is List2)
+
+print "\n9. lambda\n"
+
+def foo():
+	return 'Being with you is Amazing !'
+
+bar = lambda:'Being with you is Amazing !' # a function object
+
+print foo()
+print bar()
+
+def add(x,y):
+	return x+y
+add2 = lambda x,y : x+y
+print add(1,2)
+print add2(1,2)
+
+def sum(x,y=10):
+	return x+y
+sum2 = lambda x,y=10 : x+y
+print sum(11)
+print sum2(11)
+
+print "\n10. with, as\n"
+
+with open("lesson22.txt", 'r') as file:
+    for line in file:
+    	print line
+
+somefile = open('lesson22.txt', 'r')
+try:
+	for line in somefile:
+		print line
+finally:
+	somefile.close()
+
+print "\n11. class\n"
