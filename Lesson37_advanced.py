@@ -136,3 +136,22 @@ finally:
 	somefile.close()
 
 print "\n11. class\n"
+
+class MyClass:
+	idx = 0
+	somefile
+	def __init__(self):
+		print "MyClass initialize."
+		self.somefile = open('lesson22.txt', 'r')
+		self.idx = 1
+		print "Open lesson22.txt for reading."
+	def out(self):
+		print self.somefile.readline()
+	def __del__(self):
+		self.somefile.close()
+		print "File closed. Bye bye!"
+
+
+classA = MyClass()
+classA.out()
+del classA
