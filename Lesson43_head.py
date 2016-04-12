@@ -29,7 +29,21 @@ class Death(Scene):
 
 class CentralCorridor(Scene):
 	def enter(self):
-		pass
+		print "You do a dive roll into the Weapon Armory, crouch and scan the room"
+		print "for more Gothons that might be hiding. It's dead quiet, too quiet."
+		print "You stand up and run to the far side of the room and find the"
+		print "neutron bomb in its container. There's a keypad lock on the box"
+		print "and you need the code to get the bomb out. If you get the code"
+		print "wrong 10 times then the lock closes forever and you can't"
+		print "get the bomb. The code is 3 digits."
+		code = "%d%d%d" % (randint(1,9), randint(1,9), randint(1,9))
+		guess = raw_input("[keypad]> ")
+		guesses = 0
+
+		while guess != code and guesses < 10:
+			print "BZZZZEDDD!"
+			guesses += 1
+			guess = raw_input("[keypad]> ")
 
 class LaserWeaponArmory(Scene):
 	def enter(self):
