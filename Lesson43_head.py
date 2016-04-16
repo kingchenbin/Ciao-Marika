@@ -51,9 +51,21 @@ class CentralCorridor(Scene):
 			print "you are dead. Then he eats you."
 			return 'death'
 		
-		if action == "dodge!":
+		elif action == "dodge!":
 			print "Like a world class boxer you dodge, weave, slip and silde right"
+			print "as the Gothon's blaster cranks a laser past your head."
+			print "In the middle of your artful dodge your foot slip and you"
+			print "hang your head on the metal wall and pass out."
+			print "You wake up shortly after only to die as the Gothon stomps on"
+			print "your head and eats you."
+			return 'death'
+
+		elif action == "tell a joke":
 			pass
+
+		else:
+			print "DOES NOT COMPUTE!"
+			return 'central_corridor'
 
 class LaserWeaponArmory(Scene):
 	def enter(self):
