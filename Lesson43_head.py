@@ -61,7 +61,13 @@ class CentralCorridor(Scene):
 			return 'death'
 
 		elif action == "tell a joke":
-			pass
+			print "Lucky for you they made you learn Gothon insults in the academy."
+			print "You tell the one Gothon joke you know:"
+			print "Lbhe zbgure vf fb sng, jura fur fvgf nebhaq gur ubhfr, fur fvgf nebhaq gur ubhfr."
+			print "The Gothon stops, tries not to laugh, then busts out laughing and can't move."
+			print "While he's laughing you run up and shoot him square in the head"
+			print "putting him down, then jump through the Weapon Armory door."
+			return 'laser_weapon_armory'
 
 		else:
 			print "DOES NOT COMPUTE!"
@@ -98,11 +104,16 @@ class LaserWeaponArmory(Scene):
 			return 'death'
 
 class TheBridge(Scene):
-	def enter(Scene):
-		pass
+	def enter(self):
+		print "You burst onto the Bridge with the netron destruct bomb"
+		print "under your arm and surprise 5 Gothons who are trying to"
+		print "take control of the ship. Each of them has an even uglier"
+		print "clown costume than the last. They haven't pulled their"
+		print "weapons out yet, as they see the active bomb under your"
+		print "arm and don't want to set it off."
 
 class EscapePod(Scene):
-	def enter(Scene):
+	def enter(self):
 		pass
 
 class Map(object):
