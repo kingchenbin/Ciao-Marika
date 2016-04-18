@@ -112,6 +112,17 @@ class TheBridge(Scene):
 		print "weapons out yet, as they see the active bomb under your"
 		print "arm and don't want to set it off."
 
+		action = raw_input("> ")
+
+		if action == "throw the bomb":
+			print "In a panic you throw the bomb at the group of Gothons"
+			print "and make a leap for the door. Right as you drop it a"
+			print "Gothon shoots you right in the back killing you."
+			print "As you die you see another Gothon frantically try to disarm"
+			print "the bomb. You die knowing they will probably blow up when"
+			print "it goes off."
+			return 'death'
+
 class EscapePod(Scene):
 	def enter(self):
 		pass
