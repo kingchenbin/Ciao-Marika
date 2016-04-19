@@ -123,6 +123,12 @@ class TheBridge(Scene):
 			print "it goes off."
 			return 'death'
 
+		elif action == "slowly place the bomb":
+			print "You point your blaster at the bomb under your arm"
+			print "and the Gothons put their hands up and start to sweat."
+			print "You inch backward to the door, open it, and then carefully"
+			print "place the bomb on the floor, pointing your blaster at it."
+
 class EscapePod(Scene):
 	def enter(self):
 		pass
