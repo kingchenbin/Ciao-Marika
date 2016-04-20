@@ -16,6 +16,11 @@ class Engine(object):
 			next_scene_name = current_scene.enter()
 			current_scene = self.scene_map.next_scene(next_scene_name)
 
+class Winner(Scene):
+	def enter(self):
+		print "Well done! You are the winner!"
+		exit(1)
+
 class Death(Scene):
 	quips = [
 	"You died. You kind such at this.",
@@ -83,6 +88,7 @@ class LaserWeaponArmory(Scene):
 		print "wrong 10 times then the lock closes forever and you can't"
 		print "get the bomb. The code is 3 digits."
 		code = "%d%d%d" % (randint(1,9), randint(1,9), randint(1,9))
+		print "###", code
 		guess = raw_input("[keypad]> ")
 		guesses = 0
 
@@ -95,7 +101,7 @@ class LaserWeaponArmory(Scene):
 			print "The container clicks open and the seal breaks, letting gas out."
 			print "You grab the neutron bomb and run as fast as you can to the"
 			print "bridge where you must place it in the right spot."
-			print 'the_bridge'
+			return 'the_bridge'
 		else:
 			print "The lock buzzes one last time and then you hear a sickening"
 			print "melting sound as the mechanism is fused together."
@@ -128,10 +134,43 @@ class TheBridge(Scene):
 			print "and the Gothons put their hands up and start to sweat."
 			print "You inch backward to the door, open it, and then carefully"
 			print "place the bomb on the floor, pointing your blaster at it."
+			print "You then jump back through the door, punch the close button"
+			print "and blast the lock so the Gothons can't get out."
+			print "Now that the bomb is placed you run to the escape pod to"
+			print "get off this tin can."
+			return "escape_pod"
+		else:
+			print "DOES NOT COMPUTE!"
+			return "the_bridge"
 
 class EscapePod(Scene):
 	def enter(self):
-		pass
+		print "You rush through the ship desperately trying to make it to"
+		print "the escape pd before the whole ship explodes. It seems like"
+		print "hardly any Gothons are on the ship, so your run is clear of"
+		print "interference. You get to the chamber with the escape pods, and"
+		print "now need to pick one to take. Some of them could be damaged"
+		print "but you don't have time to look. There's 5 pods, which one"
+		print "do you take?"
+
+		good_pod = randint(1,5)
+		print "###", good_pod
+		guess = raw_input("[pod #]> ")
+
+		if int(guess) != good_pod:
+			print "You jump into pod %s and hit the eject botton." % guess
+			print "The pod escapes out into the void of space, then"
+			print "implodes as the hull ruptures, crushing your body"
+			print "into jam jelly."
+			print 'death'
+		else:
+			print "You jump into pod %s and hit the eject botton." % guess
+			print "The pod easily slides out into space heading to"
+			print "the planet below. As it flies to the planet, you look"
+			print "back and see your ship implode the explode like a"
+			print "bright star, taking out the Gothon ship at the same"
+			print "time. You won!"
+			return 'finished'
 
 class Map(object):
 	scenes = {
@@ -140,6 +179,7 @@ class Map(object):
 	'the_bridge' : TheBridge(),
 	'escape_pod' : EscapePod(),
 	'death' : Death(),
+	'finished' : Winner(),
 	}
 	def __init__(self, start_scene):
 		self.start_scene = start_scene
