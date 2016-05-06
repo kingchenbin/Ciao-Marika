@@ -1,3 +1,5 @@
+enable_audio = 0
+
 # 1 - Import library
 import pygame
 from pygame.locals import *
@@ -16,7 +18,7 @@ badtimer=100
 badtimer1=0
 badguys=[[640,100]]
 healthvalue=194
-pygame.mixer.init()
+#pygame.mixer.init()
 
 # 3 - Load image
 player = pygame.image.load("resources/images/dude.png")
@@ -30,15 +32,16 @@ health = pygame.image.load("resources/images/health.png")
 gameover = pygame.image.load("resources/images/gameover.png")
 youwin = pygame.image.load("resources/images/youwin.png")
 # 3.1 - Load audio
-hit = pygame.mixer.Sound("resources/audio/explode.wav")
-enemy = pygame.mixer.Sound("resources/audio/enemy.wav")
-shoot = pygame.mixer.Sound("resources/audio/shoot.wav")
-hit.set_volume(0.05)
-enemy.set_volume(0.05)
-shoot.set_volume(0.05)
-pygame.mixer.music.load('resources/audio/moonlight.wav')
-pygame.mixer.music.play(-1, 0.0)
-pygame.mixer.music.set_volume(0.25)
+if enable_audio != 0:
+    hit = pygame.mixer.Sound("resources/audio/explode.wav")
+    enemy = pygame.mixer.Sound("resources/audio/enemy.wav")
+    shoot = pygame.mixer.Sound("resources/audio/shoot.wav")
+    hit.set_volume(0.05)
+    enemy.set_volume(0.05)
+    shoot.set_volume(0.05)
+    pygame.mixer.music.load('resources/audio/moonlight.wav')
+    pygame.mixer.music.play(-1, 0.0)
+    pygame.mixer.music.set_volume(0.25)
 
 # 4 - keep looping through
 running = 1
@@ -71,9 +74,8 @@ while running:
         if bullet[1]<-64 or bullet[1]>640 or bullet[2]<-64 or bullet[2]>480:
             arrows.pop(index)
         index+=1
-        for projectile in arrows:
-            arrow1 = pygame.transform.rotate(arrow, 360-projectile[0]*57.29)
-            screen.blit(arrow1, (projectile[1], projectile[2]))
+        arrow1 = pygame.transform.rotate(arrow, 360-bullet[0]*57.29)
+        screen.blit(arrow1, (bullet[1], bullet[2]))
     # 6.3 - Draw badgers
     if badtimer==0:
         badguys.append([640, random.randint(50,430)])
@@ -92,7 +94,8 @@ while running:
         badrect.top=badguy[1]
         badrect.left=badguy[0]
         if badrect.left<64:
-            hit.play()
+            if enable_audio != 0:
+                hit.play()
             healthvalue -= random.randint(5,20)
             badguys.pop(index)
         #6.3.2 - Check for collisions
@@ -102,7 +105,8 @@ while running:
             bullrect.left=bullet[1]
             bullrect.top=bullet[2]
             if badrect.colliderect(bullrect):
-                enemy.play()
+                if enable_audio != 0:
+                    enemy.play()
                 acc[0]+=1
                 badguys.pop(index)
                 arrows.pop(index1)
@@ -149,7 +153,8 @@ while running:
             elif event.key==pygame.K_d:
                 keys[3]=False
         if event.type==pygame.MOUSEBUTTONDOWN:
-            shoot.play()
+            if enable_audio != 0:
+                shoot.play()
             position=pygame.mouse.get_pos()
             acc[1]+=1
             arrows.append([math.atan2(position[1]-(playerpos1[1]+32),position[0]-(playerpos1[0]+26)),playerpos1[0]+32,playerpos1[1]+32])
