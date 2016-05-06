@@ -83,6 +83,8 @@ while running:
                 if keys[0]!=2 and keys[0]!=3:
                     key=3
                     kick=True
+            elif event.key==K_SPACE:
+                print 'BLANK!'
     print 'b3', playerpos
     if kick==True:
         keys.pop()
