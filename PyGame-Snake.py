@@ -4,6 +4,18 @@ import math
 import random
 import time
 
+def HitTest(CurrentPos):
+	if CurrentPos[0] < 0:
+		return False;
+	elif CurrentPos[0] >= 640:
+		return False;
+	elif CurrentPos[1] < 0:
+		return False;
+	elif CurrentPos[1] >= 640:
+		return False;
+	else:
+		return True;
+
 pygame.init()
 width, height = 640, 640
 screen=pygame.display.set_mode((width, height))
@@ -38,6 +50,10 @@ while running:
         for y in range(height/grass.get_height()+1):
             screen.blit(grass,(x*100,y*100))
     pos = list(playerpos);
+    ret = HitTest(pos)
+    if ret != True:
+    	running = 0
+    	continue
     screen.blit(snake_node, pos)
     print '0', pos
     for i in range(0, length-1):
@@ -49,8 +65,14 @@ while running:
             pos[0] += 10
         elif keys[i] == 3:
             pos[0] -= 10
+        ret = HitTest(pos)
+        if ret != True:
+        	running = 0
+        	break
         screen.blit(snake_node, pos)
         print i+1, pos
+    if running == 0:
+    	continue
     print 'before draw', keys
 
     # 7 - update the screen
@@ -84,7 +106,17 @@ while running:
                     key=3
                     kick=True
             elif event.key==K_SPACE:
-                print 'BLANK!'
+                key = 0
+                keys = [0, 0, 0, 0]
+                kick = False
+                length = 5
+                playerpos=[100,100]
+            elif event.key==K_RETURN:
+            	currentKey = keys[length-2]
+            	length += 1
+            	keys.append(currentKey)
+            	print "!!!!!!plus!!!!!"
+
     print 'b3', playerpos
     if kick==True:
         keys.pop()
@@ -122,3 +154,6 @@ while running:
         accuracy=acc[0]*1.0/acc[1]*100
     else:
         accuracy=0
+
+print "Game Over!"
+print "You LOSE!"
