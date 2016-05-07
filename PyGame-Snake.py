@@ -4,17 +4,49 @@ import math
 import random
 import time
 
-def HitTest(CurrentPos):
-	if CurrentPos[0] < 0:
-		return False;
-	elif CurrentPos[0] >= 640:
-		return False;
-	elif CurrentPos[1] < 0:
-		return False;
-	elif CurrentPos[1] >= 640:
-		return False;
-	else:
-		return True;
+def CalcSnake(playerpos, keys, length):
+	head = list(playerpos)
+	snake = []
+	snake.append(head)
+	pos = list(head)
+	for i in range(0, length-1):
+		if keys[i] == 0:
+			pos[1] += 10
+		elif keys[i] == 1:
+			pos[1] -= 10
+		elif keys[i] == 2:
+			pos[0] += 10
+		elif keys[i] == 3:
+			pos[0] -= 10
+		tempPos = list(pos)
+		snake.append(tempPos)
+	return snake
+
+def HitTest(snake, length):
+	for i in range(0, length):
+		print length, i, snake[i][0], snake[i][1]
+		if snake[i][0] < 0:
+			return False
+		elif snake[i][0] >= 640:
+			return False
+		elif snake[i][1] < 0:
+			return False
+		elif snake[i][1] >= 640:
+			return False
+		else:
+			for j in range(0, length):
+				if i != j and snake[i] == snake[j]:
+					return False
+	return True
+
+def ShowBackground(cell):
+	for x in range(width/cell.get_width()+1):
+		for y in range(height/cell.get_height()+1):
+			screen.blit(cell,(x*100,y*100))
+
+def ShowSnake(snake):
+	for pos in snake:
+		screen.blit(snake_node, pos)
 
 pygame.init()
 width, height = 640, 640
@@ -45,42 +77,21 @@ while running:
     badtimer-=1
     # 5 - clear the screen before drawing it again
     screen.fill(0)
-    # 6 - draw the player on the screen at X:100, Y:100
-    for x in range(width/grass.get_width()+1):
-        for y in range(height/grass.get_height()+1):
-            screen.blit(grass,(x*100,y*100))
-    pos = list(playerpos);
-    ret = HitTest(pos)
-    if ret != True:
+
+    snake = CalcSnake(playerpos, keys, length)
+    if True == HitTest(snake, length):
+    	ShowBackground(grass)
+    	ShowSnake(snake)
+    else:
     	running = 0
-    	continue
-    screen.blit(snake_node, pos)
-    print '0', pos
-    for i in range(0, length-1):
-        if keys[i] == 0:
-            pos[1] += 10
-        elif keys[i] == 1:
-            pos[1] -= 10
-        if keys[i] == 2:
-            pos[0] += 10
-        elif keys[i] == 3:
-            pos[0] -= 10
-        ret = HitTest(pos)
-        if ret != True:
-        	running = 0
-        	break
-        screen.blit(snake_node, pos)
-        print i+1, pos
-    if running == 0:
-    	continue
-    print 'before draw', keys
+    	break
 
     # 7 - update the screen
     pygame.display.flip()
     
     time.sleep(0.6)
     kick = False
-    print 'b2', playerpos
+
     # 8 - loop through the events
     for event in pygame.event.get():
         # check if the event is the X button 
@@ -115,34 +126,25 @@ while running:
             	currentKey = keys[length-2]
             	length += 1
             	keys.append(currentKey)
-            	print "!!!!!!plus!!!!!"
 
-    print 'b3', playerpos
     if kick==True:
         keys.pop()
         keys.insert(0, key)
-        print keys
     else:
         currentKey = keys[0]
         keys.pop()
         keys.insert(0, currentKey)
-        
-    print 'after event', playerpos
-    print 'after event', keys
+
     # 9 - Move player
     if keys[0]==0:
-        print 'AA'
         playerpos[1]-=10
     elif keys[0]==1:
-        print 'BB'
         playerpos[1]+=10
     if keys[0]==2:
-        print 'CC'
         playerpos[0]-=10
     elif keys[0]==3:
-        print 'DD'
         playerpos[0]+=10
-    print 'after process', playerpos
+
     #10 - Win/Lose check
     if pygame.time.get_ticks()>=90000:
         running=0
