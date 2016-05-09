@@ -4,6 +4,12 @@ import math
 import random
 import time
 
+WINDOW_WIDTH = 640
+WINDOW_HEIGHT = 640
+
+def InitBarriers(playerpos, length):
+	return [[10,0],[20,0]]
+
 def CalcSnake(playerpos, keys, length):
 	head = list(playerpos)
 	snake = []
@@ -22,26 +28,29 @@ def CalcSnake(playerpos, keys, length):
 		snake.append(tempPos)
 	return snake
 
-def HitTest(snake, length):
+def HitTest(snake, length, barriers):
 	for i in range(0, length):
 		print length, i, snake[i][0], snake[i][1]
 		if snake[i][0] < 0:
 			return False
-		elif snake[i][0] >= 640:
+		elif snake[i][0] >= WINDOW_WIDTH:
 			return False
 		elif snake[i][1] < 0:
 			return False
-		elif snake[i][1] >= 640:
+		elif snake[i][1] >= WINDOW_HEIGHT:
 			return False
 		else:
 			for j in range(0, length):
 				if i != j and snake[i] == snake[j]:
 					return False
+			for brick in barriers:
+				if brick == snake[i]:
+					return False
 	return True
 
 def ShowBackground(cell):
-	for x in range(width/cell.get_width()+1):
-		for y in range(height/cell.get_height()+1):
+	for x in range(WINDOW_WIDTH/cell.get_width()+1):
+		for y in range(WINDOW_HEIGHT/cell.get_height()+1):
 			screen.blit(cell,(x*100,y*100))
 
 def ShowSnake(snake):
@@ -49,8 +58,7 @@ def ShowSnake(snake):
 		screen.blit(snake_node, pos)
 
 pygame.init()
-width, height = 640, 640
-screen=pygame.display.set_mode((width, height))
+screen=pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
 # UP/0 DOWN/1 LEFT/2 RIGHT/3
 key = 0
@@ -71,6 +79,8 @@ healthvalue=194
 snake_node = pygame.image.load("resources/images/snake_node.png")
 grass = pygame.image.load("resources/images/grass.png")
 
+barriers=InitBarriers(playerpos,length)
+
 running = 1
 exitcode = 0
 while running:
@@ -79,7 +89,7 @@ while running:
     screen.fill(0)
 
     snake = CalcSnake(playerpos, keys, length)
-    if True == HitTest(snake, length):
+    if True == HitTest(snake, length, barriers):
     	ShowBackground(grass)
     	ShowSnake(snake)
     else:
