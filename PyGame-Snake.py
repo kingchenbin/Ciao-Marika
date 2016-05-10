@@ -7,9 +7,44 @@ import time
 WINDOW_WIDTH = 640
 WINDOW_HEIGHT = 640
 
-def InitBarriers(playerpos, length):
-	return [[10,0],[20,0]]
+def GetCellsOnMap(barriers, snake):
+	cells = []
+	for i in range(0, WINDOW_WIDTH):
+		for j in range(0, WINDOW_HEIGHT):
+			pos = [i, j]
+			vacant = True
+			for item in barriers:
+				if pos == item:
+					vacant = False
+			for item in snake:
+				if pos == item:
+					vacant = False
+			if vacant:
+				cells.append(pos)
+	print "length:", len(cells)
+	return cells
 
+def InitBarriers(playerpos, length):
+	barriers = []
+	for i in range(0, 20):
+		for j in [300,320]:
+			pos = [120+i*10,j]
+			barriers.append(pos)
+			pos = [120+i*10,j+10]
+			barriers.append(pos)
+			pos = [320+i*10,j]
+			barriers.append(pos)
+			pos = [320+i*10,j+10]
+			barriers.append(pos)
+	print barriers
+	return barriers
+
+def ShowBarriers(brick):
+	screen.blit(brick, [120,300])
+	screen.blit(brick, [120,320])
+	screen.blit(brick, [320,300])
+	screen.blit(brick, [320,320])
+		
 def CalcSnake(playerpos, keys, length):
 	head = list(playerpos)
 	snake = []
@@ -53,6 +88,7 @@ def ShowBackground(cell):
 		for y in range(WINDOW_HEIGHT/cell.get_height()+1):
 			screen.blit(cell,(x*100,y*100))
 
+
 def ShowSnake(snake):
 	for pos in snake:
 		screen.blit(snake_node, pos)
@@ -78,6 +114,7 @@ healthvalue=194
 # 3 - Load image
 snake_node = pygame.image.load("resources/images/snake_node.png")
 grass = pygame.image.load("resources/images/grass.png")
+brick = pygame.image.load("resources/images/healthbar.png")
 
 barriers=InitBarriers(playerpos,length)
 
@@ -91,7 +128,9 @@ while running:
     snake = CalcSnake(playerpos, keys, length)
     if True == HitTest(snake, length, barriers):
     	ShowBackground(grass)
+    	ShowBarriers(brick)
     	ShowSnake(snake)
+    	GetCellsOnMap(barriers, snake)
     else:
     	running = 0
     	break
