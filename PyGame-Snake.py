@@ -7,22 +7,26 @@ import time
 WINDOW_WIDTH = 640
 WINDOW_HEIGHT = 640
 
-def GetCellsOnMap(barriers, snake):
-	cells = []
-	for i in range(0, WINDOW_WIDTH):
-		for j in range(0, WINDOW_HEIGHT):
-			pos = [i, j]
-			vacant = True
-			for item in barriers:
-				if pos == item:
-					vacant = False
-			for item in snake:
-				if pos == item:
-					vacant = False
-			if vacant:
-				cells.append(pos)
-	print "length:", len(cells)
-	return cells
+def GetRandomVacancyOnMap(barriers, snake):
+	bFind = 0
+	pos = [0, 0]
+	while bFind == 0:
+		x = random.randint(0, WINDOW_WIDTH/10)
+		y = random.randint(0, WINDOW_HEIGHT/10)
+		pos = [x*10, y*10]
+		print pos
+		vacant = True
+		for item in barriers:
+			if pos == item:
+				vacant = False
+		for item in snake:
+			if pos == item:
+				vacant = False
+		if vacant:
+			bFind = 1
+	print "Find", pos
+	return pos
+	
 
 def InitBarriers(playerpos, length):
 	barriers = []
@@ -63,7 +67,7 @@ def CalcSnake(playerpos, keys, length):
 		snake.append(tempPos)
 	return snake
 
-def HitTest(snake, length, barriers):
+def BoundTest(snake, length, barriers):
 	for i in range(0, length):
 		print length, i, snake[i][0], snake[i][1]
 		if snake[i][0] < 0:
@@ -83,6 +87,12 @@ def HitTest(snake, length, barriers):
 					return False
 	return True
 
+def HitTest(snake, length, sprite):
+	for i in range(0, length):
+		if sprite == snake[i]:
+			return True
+	return False
+
 def ShowBackground(cell):
 	for x in range(WINDOW_WIDTH/cell.get_width()+1):
 		for y in range(WINDOW_HEIGHT/cell.get_height()+1):
@@ -92,6 +102,9 @@ def ShowBackground(cell):
 def ShowSnake(snake):
 	for pos in snake:
 		screen.blit(snake_node, pos)
+
+def ShowSprite(sprite):
+	screen.blit(snake_node, sprite)
 
 pygame.init()
 screen=pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
@@ -103,6 +116,7 @@ kick = False
 
 length = 5
 playerpos=[100,100]
+sprite = [-1,-1]
 
 acc=[0,0]
 arrows=[]
@@ -126,11 +140,19 @@ while running:
     screen.fill(0)
 
     snake = CalcSnake(playerpos, keys, length)
-    if True == HitTest(snake, length, barriers):
+    if sprite == [-1,-1]:
+    	sprite = GetRandomVacancyOnMap(barriers, snake)
+    if True == BoundTest(snake, length, barriers):
     	ShowBackground(grass)
     	ShowBarriers(brick)
     	ShowSnake(snake)
-    	GetCellsOnMap(barriers, snake)
+    	if HitTest(snake, length, sprite):
+    		currentKey = keys[length-2]
+    		length += 1
+    		keys.append(currentKey)
+    		sprite = [-1,-1]
+    	else:
+    		ShowSprite(sprite)
     else:
     	running = 0
     	break
@@ -138,7 +160,7 @@ while running:
     # 7 - update the screen
     pygame.display.flip()
     
-    time.sleep(0.6)
+    time.sleep(0.2)
     kick = False
 
     # 8 - loop through the events
