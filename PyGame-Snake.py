@@ -11,8 +11,8 @@ def GetRandomVacancyOnMap(barriers, snake):
 	bFind = 0
 	pos = [0, 0]
 	while bFind == 0:
-		x = random.randint(0, WINDOW_WIDTH/10)
-		y = random.randint(0, WINDOW_HEIGHT/10)
+		x = random.randint(0, WINDOW_WIDTH/10-1)
+		y = random.randint(0, WINDOW_HEIGHT/10-1)
 		pos = [x*10, y*10]
 		print pos
 		vacant = True
@@ -155,6 +155,7 @@ while running:
     		ShowSprite(sprite)
     else:
     	running = 0
+    	exitcode = 0
     	break
 
     # 7 - update the screen
@@ -220,13 +221,13 @@ while running:
     if pygame.time.get_ticks()>=90000:
         running=0
         exitcode=1
-    if healthvalue<=0:
+    if length>10:
         running=0
-        exitcode=0
-    if acc[1]!=0:
-        accuracy=acc[0]*1.0/acc[1]*100
-    else:
-        accuracy=0
+        exitcode=1
 
-print "Game Over!"
-print "You LOSE!"
+if exitcode == 1:
+	print "Congratulations!"
+	print "You WIN!"
+else:
+	print "Game Over!"
+	print "You LOSE!"
