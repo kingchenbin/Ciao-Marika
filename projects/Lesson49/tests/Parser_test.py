@@ -23,3 +23,14 @@ def test_noisy_sentence():
     assert_equal(sentence.subject, 'player')
     assert_equal(sentence.verb, 'kill')
     assert_equal(sentence.object, 'bear')
+    
+def test_noisy_sentence():
+    result = lexicon.scan("in kill eat bear princess")
+    assert_equal(result, [('stop', 'in'),
+                          ('verb', 'kill'),
+                          ('verb', 'eat'),
+                          ('noun', 'bear'),
+                          ('noun', 'princess')])
+    #sentence = parse_sentence(result)
+    assert_raises(ParserError, parse_sentence, result)
+    assert_raises(ParserError, parse_verb, [('noun', 'bear')], 0)

@@ -31,7 +31,7 @@ def skip(word_list, word_type):
     while peek(word_list) == word_type:
         match(word_list, word_type)
         
-def parse_verb(word_list):
+def parse_verb(word_list, num):
     skip(word_list, 'stop')
 
     if peek(word_list) == 'verb':
@@ -63,7 +63,7 @@ def parse_subject(word_list):
 
 def parse_sentence(word_list):
     subj = parse_subject(word_list)
-    verb = parse_verb(word_list)
+    verb = parse_verb(word_list, 0)
     obj = parse_object(word_list)
 
     return Sentence(subj, verb, obj)
